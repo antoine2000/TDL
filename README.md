@@ -67,3 +67,6 @@ Par exemple : on écrira "--titlem TITRE2" si on veut que les tâches sélection
 
 Exemple complet : "modify --begin 15/2/2020 --beginm 15/4/2020 --descriptionm tâche reportée" modifiera toutes les tâches commençant le 15 février 2020 en des tâches commençant le 15 Avril 2020 avec une description "tâche reportée".
 
+# Mode Graphique
+
+Le mode graphique utilise les fonctions définies dans le mode console et apporte une interface graphique supplémentaire. On y retrouve donc les mêmes fonctionnalités. Voici un graphe des différentes parties de l'interface que vous verrez :
