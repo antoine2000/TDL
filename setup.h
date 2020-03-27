@@ -1,16 +1,6 @@
 /* Includes */
 
-#include <iostream>
-#include<vector>
-#include <ctime>
-#include<fstream>
-#include<string>
-#include <algorithm>
 #include "functions.h"
-
-using namespace std;
-
-
 
 Task_manager extract_from_line(string line) {
 
@@ -24,7 +14,7 @@ Task_manager extract_from_line(string line) {
 			progress = "Open";
 			break;
 		case 1 : 
-			progress = "In_Progress";
+			progress = "In-Progress";
 			break;
 		case 2 : 
 			progress = "Closed";
@@ -43,7 +33,7 @@ Task_manager extract_from_line(string line) {
 			priority = "High";
 			break;
 		case 3 :
-			priority = "Super_High";
+			priority = "Super-High";
 			break;
 	};
 	vector<string> comments = parse(parse_line[8], ";");
@@ -80,7 +70,7 @@ vector<Task_manager> setup() {
 
 
 
-struct understood{
+struct understood {
 
 	/* This struct allows us to have an easier understanding the input of the user*/
 
@@ -89,7 +79,7 @@ struct understood{
 	vector<vector<string>> values;
 };
 
-understood to_understood(vector<string> instructs){
+understood to_understood(vector<string> instructs) {
 
 	/* This function takes the parsed input line in the prompt as argument and return instructions for the API. It means that the input instructs are parsed 
 	with the '--' keyword. */
@@ -150,18 +140,33 @@ void execute(vector<string> instructs, vector<Task_manager> Tasks) {
 	string main_function = u.main_function;
 	vector<string> args = u.args;
 	vector<vector<string>> values = u.values;
-	if (main_function == "list ") {
+	if (main_function == "list " || main_function == "list") {
 		vector<Task_manager> list_task = list(Tasks, args, values);
 		vector<Task_manager>::iterator it;
 		for (it = list_task.begin(); it < list_task.end(); it++){
 			it->print();
 		}
-	} else if (main_function == "create ") {
+	} else if (main_function == "create " || main_function == "create") {
 		create(Tasks, args, values);
-	} else if (main_function == "modify ") {
+	} else if (main_function == "modify " || main_function == "modify") {
 		modify(Tasks, args, values);
-	} else if (main_function == "remove ") {
-		vector<Task_manager> list_remove = list(Tasks,args,values);
-		remove_tasks(list_remove);
+	} else if (main_function == "remove " || main_function == "remove") {
+
+		// We must verify user's intention
+
+		cout << "        [[[ ARE YOU SURE, USER ? ]]] " << endl;
+		string reponse;
+		while (reponse != "y" && reponse != "N"){
+			cout << " [y/N] ? ";
+			getline(cin, reponse);
+		} 
+		if (reponse == "y"){
+
+			// The user is SURE !
+
+			vector<Task_manager> list_remove = list(Tasks,args,values);
+			remove_tasks(list_remove);			
+		}
+
 	}
 }

@@ -1,29 +1,3 @@
-/*
-int f(int argc, char **argv){
-  Fl_Window *window = new Fl_Window(340,480);
-  Fl_Box *box = new Fl_Box(20,40,300,100,"Hello, World!");
-  box->box(FL_UP_BOX);
-  box->labelfont(FL_BOLD+FL_ITALIC);
-  box->labelsize(36);
-  box->labeltype(FL_SHADOW_LABEL);
-  Fl_Button *button = new Fl_Button(20,20, 30, 30);
-  Fl_Input *input = new Fl_Input(20,50,300,100);
-  input -> value("caca",4);
-  window->end();
-  window->show(argc, argv);
-  Fl_Window *window2 = new Fl_Window(800,800);
-  window2 -> end();
-  window2 -> show(argc,argv);
-  Fl::run();
-  int a = input -> value();
-  
-}
-
-int main(int argc, char **argv) {
-	f(argc, argv);
-	return 0;
-}*/
-
 #include <FL/Fl.H>
 #include <FL/Fl_Window.H>
 #include <FL/Fl_Input.H>
@@ -38,6 +12,7 @@ int main(int argc, char **argv) {
 #include <FL/Fl_Multiline_Input.H>
 #include "setup.h"
 #include <unistd.h>
+
 struct Info {
     // The widgets
     Fl_Int_Input* ID;
@@ -52,17 +27,6 @@ struct Info {
     Fl_Input* sub_tasks;
     Task_manager* Task;
     vector<Task_manager> Tasks;
-    // Saved values
-    /*int ID_value;
-    string title_value;
-    string description_value;
-    string begin_value;
-    string end_value;
-    string progress_value;
-    int avancement_value;
-    string priority_value;
-    vector<string> comments_value;
-    vector<int> sub_tasks_value;*/
 };
 
 struct list_done {
@@ -70,60 +34,72 @@ struct list_done {
   vector<Task_manager>* found;
 };
 
-// Callback for the done button
-/*void done_cb(Fl_Widget* w, void* param)
-{
-    Info* input = reinterpret_cast<Info*>(param);
+understood get_values(Info* input){
+  vector<string> args;
+  vector<vector<string>> values;
+  static char s[1000];
+        // title
+  if (input -> title -> size() != 0){
+    strcpy(s, input -> title -> value());
+    args.push_back("-title");
+    values.push_back(vector<string> {s});
+  }
+        // description
+  if (input -> description -> size() != 0){
+    strcpy(s, input -> description -> value());
+    args.push_back("-description");
+    values.push_back(vector<string> {s});
+  }
+        // begin
+  if (input -> begin -> size() != 0){
+    strcpy(s, input -> begin -> value());
+    args.push_back("-begin");
+    values.push_back(vector<string> {s});
+  }
+        // end
+  if (input -> end -> size() != 0){
+    strcpy(s, input -> end -> value());
+    args.push_back("-end");
+    values.push_back(vector<string> {s});
+  }
+            // progress
+  strcpy(s, input -> progress -> value());
+  args.push_back("-progress");
+  values.push_back(vector<string> {s});
 
-    // Get the values from the widgets
-    strcpy (input->sval, input->instr->value());
-    input->ival = atoi(input->inint->value());
-
-    // Print the values
-    printf("String value is %s\n", input->sval);
-    printf("Integer value is %d\n", input->ival);
-}*/
-
-
-
-/*int main(int argc, char **argv)
-{
-    Info input;
-
-    // Setup the colours
-    Fl::args(argc, argv);
-    Fl::get_system_colors();
-
-    // Create the window
-    Fl_Window *window = new Fl_Window(200, 150);
-    int x = 50, y = 10, w = 100, h = 30;
-    input.instr = new Fl_Input(x, y, w, h, "Str");
-    input.instr->tooltip("String input");
-
-    y += 35;
-    input.inint = new Fl_Int_Input(x, y, w, h, "Int"); 
-    input.inint->tooltip("Integer input");
-
-    y += 35;
-    Fl_Button* done = new Fl_Button(x, y, 100, h, "Done");
-    done->callback(done_cb, &input); 
-    window->end();
-
-    window->show(argc, argv);
-    return Fl::run();
-}*/
+        // avancement
+  if (input -> avancement -> size() != 0){
+    args.push_back("-avancement");
+    values.push_back(vector<string> {to_string(atoi(input->avancement->value()))});
+  }
+        // priority
+  strcpy(s, input -> priority -> value());
+  args.push_back("-priority");
+  values.push_back(vector<string> {s});
+        // comments
+  if (input -> comments -> size() != 0){
+    strcpy(s, input -> comments -> value());
+    args.push_back("-comments");
+    values.push_back(parse(s,"\n"));
+  }  
+        // under
+  if (input -> sub_tasks -> size() != 0){
+    strcpy(s, input -> sub_tasks -> value());
+    args.push_back("under");
+    values.push_back(parse(s,"\n"));
+  }
+  understood param;
+  param.args = args;
+  param.values = values;
+  return param;
+}
 
 void execute_modif(Fl_Widget* win, void* new_values){
   Info* input = reinterpret_cast<Info*>(new_values);
   // values to give as argument to the "modify" function
-  vector<string> args;
-  vector<vector<string>> values;
-  // title
-  if(input -> title -> size() != 0) {
-    args.push_back("-title");
-    values.push_back(vector<string> {input -> title -> value()});
-  }
-  modify(input -> Tasks, args, values);
+  understood param = get_values(input);
+  vector<Task_manager> Tasks = setup();
+  modify(Tasks, param.args, param.values);
   if (win -> parent() -> parent() -> parent() != nullptr){
     win -> parent() -> parent() -> parent() -> hide(); 
   } 
@@ -187,7 +163,6 @@ void modify_task(Fl_Widget *window, void* transmission){
   Fl_Box *comments = new Fl_Box(x + 75, y, w, h, old_comments);
   // Under
   y += h + 15;
-  cout << y << endl;
   static char old_Under[10000];
   vector<int>::iterator it2;
   h = 30 * (input -> Task -> Under).size();
@@ -220,8 +195,8 @@ void modify_task(Fl_Widget *window, void* transmission){
   new_values.progress = new Fl_Input_Choice(x, y, w, h, "new progress");
   new_values.progress -> tooltip("new progress");
   new_values.progress -> add("Open");
-  new_values.progress -> add("In-progress");
-  new_values.progress -> add("Closed");  
+  new_values.progress -> add("In-Progress");
+  new_values.progress -> add("Closed");
   // avancement
   y += 35;
   new_values.avancement = new Fl_Int_Input(x, y, w, h, "new avancement");
@@ -234,6 +209,16 @@ void modify_task(Fl_Widget *window, void* transmission){
   new_values.priority -> add("Normal");
   new_values.priority -> add("High");
   new_values.priority -> add("Super-High");
+
+  y += 35;
+  new_values.comments = new Fl_Multiline_Input(x + 35, y, w - 35, h + 50,"comments");
+  new_values.comments -> tooltip("comments");
+
+  y += 85;
+  new_values.sub_tasks = new Fl_Input(x + 30, y, w - 30, h,"sub_tasks");
+  new_values.sub_tasks -> tooltip("sub_tasks");
+
+
   Fl_Button *done = new Fl_Button(350,470,100,30,"done");
   done -> callback(execute_modif, &new_values);
   win -> end();
@@ -362,83 +347,12 @@ int affiche_list(vector<Task_manager> found) {
   return Fl::run();
 }
 
-void done_list(Fl_Widget *wh, void* param) {
-    Info* input = reinterpret_cast<Info*>(param);
-    // computing the args for list
-    vector<string> args;
-    vector<vector<string>> values;
+void done_list(Fl_Widget *wh, void* parameter) {
+  Info* input = reinterpret_cast<Info*>(parameter);
 
-    // get the inputs and add it to the args
-    char s[1000];
-          // ID
-    if (input->ID->size() != 0) {
-      args.push_back("ID");
-      values.push_back(vector<string> {to_string(atoi(input->ID->value()))});
-    }
-          // title
-    if (input -> title -> size() != 0){
-      strcpy(s, input -> title -> value());
-      args.push_back("title");
-      values.push_back(vector<string> {s});
-    }
-          // description
-    if (input -> description -> size() != 0){
-      strcpy(s, input -> description -> value());
-      args.push_back("description");
-      values.push_back(vector<string> {s});
-    }
-          // begin
-    if (input -> begin -> size() != 0){
-      strcpy(s, input -> begin -> value());
-      args.push_back("begin");
-      values.push_back(vector<string> {s});
-    }
-          // end
-    if (input -> end -> size() != 0){
-      strcpy(s, input -> end -> value());
-      args.push_back("end");
-      values.push_back(vector<string> {s});
-    }
-              // progress
-    if (input -> progress -> value() == "Open" && input -> progress -> value() == "In-progress" && input -> progress -> value() == "Closed") {
-      strcpy(s, input -> progress -> value());
-      args.push_back("progress");
-      values.push_back(vector<string> {s});
-    }
-          // avancement
-    if (input -> avancement -> size() != 0){
-      args.push_back("avancement");
-      values.push_back(vector<string> {to_string(atoi(input->avancement->value()))});
-    }
-          // priority
-    if (input -> priority -> value() == "Low" && input -> priority -> value() == "Normal" 
-        && input -> priority -> value() == "High" && input -> priority -> value() == "Super-High") {
-      strcpy(s, input -> priority -> value());
-      args.push_back("priority");
-      values.push_back(vector<string> {s});
-    }           
-          // comments
-    if (input -> end -> size() != 0){
-      strcpy(s, input -> comments -> value());
-      args.push_back("comments");
-      values.push_back(parse(s,"\n"));
-    }  
-          // under
-    if (input -> sub_tasks -> size() != 0){
-      strcpy(s, input -> sub_tasks -> value());
-      args.push_back("sub_tasks");
-      values.push_back(parse(s,"\n"));
-      /*vector<string> sub;
-      vector<string> values_input = parse(s, "\n");
-      vector<string>::iterator it;
-      for (it = values_input.begin(); it != values_input.end(); it++) {
-        sub.push_back(to_string(stoi(*it)));
-      }
-      values.push_back(sub);*/
-    }
-    vector<Task_manager> Tasks = setup();
-    vector<Task_manager> found = list(Tasks, args, values);
-    int i = affiche_list(found);
+  understood param = get_values(input);
+  vector<Task_manager> found = list(setup(), param.args, param.values);
+  int i = affiche_list(found);
     
 }
 
@@ -469,8 +383,9 @@ void list_graphic(Fl_Widget *wh){
 
   y += 40;
   input.progress = new Fl_Input_Choice(x + 30, y, w - 30, h, "progress");
+  input.progress -> tooltip("progress");
   input.progress -> add("Open");
-  input.progress -> add("In-progress");
+  input.progress -> add("In-Progress");
   input.progress -> add("Closed");
 
   y += 35;
@@ -478,6 +393,7 @@ void list_graphic(Fl_Widget *wh){
 
   y += 35;
   input.priority = new Fl_Input_Choice(x + 20, y, w - 20, h, "priority");
+  input.priority -> tooltip("priority");
   input.priority -> add("Low");
   input.priority -> add("Normal");
   input.priority -> add("High");
@@ -503,13 +419,71 @@ void modify_graphic(Fl_Widget *w){
   int i = affiche_list(Tasks);
 }
 
-void process_delete(Fl_Widget *w, void* param){
-  Info* Input = reinterpret_cast<Info*>(param);
-  vector<vector<string>> values {vector<string> {to_string(atoi(Input->ID->value()))}};
-  vector<string> args {"ID"};
+void process_delete(Fl_Widget *w, void* parameter){
+  Info* Input = reinterpret_cast<Info*>(parameter);
+
+  understood param = get_values(Input);
   vector<Task_manager> Tasks = setup();
-  vector<Task_manager> list_task = list(Tasks,args,values);
+  vector<Task_manager> list_task = list(Tasks, param.args, param.values);
   remove_tasks(list_task);
+}
+
+void delete_task_by_elements(Fl_Widget *wh){
+  Fl_Window *win = new Fl_Window(800,800,"Delete some tasks giving some elements");
+  Fl_Box *head = new Fl_Box(10,10,780,100,"Veuillez lister les caractéristiques des tâches à supprimer");
+  head -> labelsize(20);
+  Info input;
+  int x = 80, y = 110, w = 660, h = 30;
+  input.title = new Fl_Input(x, y, w, h,"title");
+  input.title -> tooltip("title");
+
+  y += 35;
+  input.description = new Fl_Input(x + 50, y, w - 50, h,"description");
+  input.description -> tooltip("description");
+
+  y += 35;
+  input.begin = new Fl_Input(x + 10 , y, w - 10 , h,"begin");
+  input.begin -> tooltip("begin");
+
+  y += 35;
+  input.end = new Fl_Input(x - 5, y + 5, w, h,"end");
+  input.end -> tooltip("end");
+
+  y += 40;
+  input.progress = new Fl_Input_Choice(x + 30, y, w - 30, h, "progress");
+  input.progress -> tooltip("progress");
+  input.progress -> add("Open");
+  input.progress -> add("In-Progress");
+  input.progress -> add("Closed");
+
+  y += 35;
+  input.avancement = new Fl_Int_Input(x + 53, y, w - 53, h, "avancement");
+
+  y += 35;
+  input.priority = new Fl_Input_Choice(x + 20, y, w - 20, h, "priority");
+  input.priority -> tooltip("priority");
+  input.priority -> add("Low");
+  input.priority -> add("Normal");
+  input.priority -> add("High");
+  input.priority -> add("Super-High");
+
+  y += 35;
+  input.comments = new Fl_Multiline_Input(x + 35, y, w - 35, h + 50,"comments");
+  input.comments -> tooltip("comments");
+
+  y += 85;
+  input.sub_tasks = new Fl_Input(x + 30, y, w - 30, h,"sub_tasks");
+  input.sub_tasks -> tooltip("sub_tasks");
+
+  y += 35;
+  Fl_Button *done = new Fl_Button(x + 150,y,w- 250,h,"done");
+
+  done -> callback(process_delete,&input);
+
+  win -> end();
+  win -> show();
+
+  int i = Fl::run();
 }
 
 void delete_task_by_id(Fl_Widget *w){
@@ -530,74 +504,17 @@ void Delete_graphic(Fl_Widget *w){
   by_id -> tooltip("Delete a task giving its ID");
   by_elements -> tooltip("Possibility to delete more than one task in a single time.");
   by_id -> callback(delete_task_by_id);
+  by_elements -> callback(delete_task_by_elements);
   win -> end();
   win -> show();
 }
 
-void done_create(Fl_Widget *wh, void* param){
-    Info* input = reinterpret_cast<Info*>(param);
-    // computing the args for list
-    vector<string> args;
-    vector<vector<string>> values;
+void done_create(Fl_Widget *wh, void* parameter){
+    Info* input = reinterpret_cast<Info*>(parameter);
 
-    // get the inputs and add it to the args
-    char s[1000];
-          // title
-    if (input -> title -> size() != 0){
-      strcpy(s, input -> title -> value());
-      args.push_back("-title");
-      values.push_back(vector<string> {s});
-    }
-          // description
-    if (input -> description -> size() != 0){
-      strcpy(s, input -> description -> value());
-      args.push_back("-description");
-      values.push_back(vector<string> {s});
-    }
-          // begin
-    if (input -> begin -> size() != 0){
-      strcpy(s, input -> begin -> value());
-      args.push_back("-begin");
-      values.push_back(vector<string> {s});
-    }
-          // end
-    if (input -> end -> size() != 0){
-      strcpy(s, input -> end -> value());
-      args.push_back("-end");
-      values.push_back(vector<string> {s});
-    }
-              // progress
-    if (input -> progress -> value() == "Open" && input -> progress -> value() == "In-progress" && input -> progress -> value() == "Closed") {
-      strcpy(s, input -> progress -> value());
-      args.push_back("-progress");
-      values.push_back(vector<string> {s});
-    }
-          // avancement
-    if (input -> avancement -> size() != 0){
-      args.push_back("-avancement");
-      values.push_back(vector<string> {to_string(atoi(input->avancement->value()))});
-    }
-          // priority
-    if (input -> priority -> value() == "Low" && input -> priority -> value() == "Normal" 
-        && input -> priority -> value() == "High" && input -> priority -> value() == "Super-High") {
-      strcpy(s, input -> priority -> value());
-      args.push_back("-priority");
-      values.push_back(vector<string> {s});
-    }           
-          // comments
-    if (input -> end -> size() != 0){
-      strcpy(s, input -> comments -> value());
-      args.push_back("-comments");
-      values.push_back(parse(s,"\n"));
-    }  
-          // under
-    if (input -> sub_tasks -> size() != 0){
-      strcpy(s, input -> sub_tasks -> value());
-      args.push_back("-sub_tasks");
-      values.push_back(parse(s,"\n"));
-    }
+    understood param = get_values(input);
     vector<Task_manager> Tasks = setup();
-    create(Tasks, args, values);
+    create(Tasks, param.args, param.values);
 }
 
 void create_graphic(Fl_Widget *wh){
@@ -625,8 +542,9 @@ void create_graphic(Fl_Widget *wh){
 
   y += 40;
   input.progress = new Fl_Input_Choice(x + 30, y, w - 30, h, "progress");
+  input.progress -> tooltip("progress");
   input.progress -> add("Open");
-  input.progress -> add("In-progress");
+  input.progress -> add("In-Progress");
   input.progress -> add("Closed");
 
   y += 35;
@@ -634,6 +552,7 @@ void create_graphic(Fl_Widget *wh){
 
   y += 35;
   input.priority = new Fl_Input_Choice(x + 20, y, w - 20, h, "priority");
+  input.priority -> tooltip("priority");
   input.priority -> add("Low");
   input.priority -> add("Normal");
   input.priority -> add("High");

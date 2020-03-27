@@ -1,10 +1,8 @@
 #include <iostream>
-#include<vector>
 #include <ctime>
 #include<fstream>
 #include<string>
 #include "Tasks.h"
-using namespace std;
 
 string sum(vector<string> vec) {
 
@@ -70,27 +68,33 @@ vector<Task_manager> list(vector<Task_manager> Tasks, vector<string> args, vecto
 	    	} else if (arg == "-end" || arg == "end") {
 	    		field = Task.end;
 	    	} else if (arg == "-progress" || arg == "progress") {
+	    		if (values[j][0] != "Open" & values[j][0] != "In-Progress" & values[j][0] != "Closed"){
+	    			continue;
+	    		}
 	    		field = Task.progress;
 	    	} else if (arg == "-avancement" || arg == "avancement") {
 	    		field = to_string(Task.avancement);
 	    	} else if (arg == "-priority" || arg == "priority") {
+	    		if (values[j][0] != "Low" & values[j][0] != "Normal" & values[j][0] != "High" & values[j][0] != "Super-High"){
+	    			continue;
+	    		}
 	    		field = Task.priority;
 	    	}
 	    	if (field != sum(values[j])) {
 	    		boolean = false;
 	    	}
-	    	if (arg == "-comments" || arg == "comments") {
+	    	if (arg == "-comments" || arg == "comments") { // Every argument given by the user must be present in the selected tasks.
 	    		vector<string> coms = Task.comments;
     			vector<string>::iterator it1;
     			for (it1 = values[j].begin(); it1 < values[j].end(); it1++ ){	    		
-    				bool sub_bool = false;
+    				bool sub_bool = false; 								// Check whereas one of the comments of the Task is the comment given by the user
 	    			vector<string>::iterator it2;
     				for (it2 = coms.begin(); it2 < coms.end(); it2++) {
 						if (*it2 == *it1) {
 	    					sub_bool = true;
 	    				}
 	    			}
-		    		if (not sub_bool) {
+		    		if (not sub_bool) { 		// if one comment given by the user is not present in this task, we don't take it.
 		    			boolean = false;
 		    		}
 	    		}
@@ -136,6 +140,8 @@ int get_top(vector<Task_manager> Tasks) {
 void create(vector<Task_manager> Tasks, vector<string> args, vector<vector<string>> values) {
 
 	/* This function aims to prepare the arguments passed to the generator of the Task struct. It detects the fields given by the user, and the associated values*/
+	
+	bool is_task_good = true;
 
 	int top = get_top(Tasks);
 	Task_manager New_task = Task_manager(top);
@@ -150,21 +156,40 @@ void create(vector<Task_manager> Tasks, vector<string> args, vector<vector<strin
 		} else if (arg == "-end") {
 			New_task.end = sum(values[i]);
 		} else if (arg == "-progress") {
+	    	if (values[i][0] != "Open" & values[i][0] != "In-Progress" & values[i][0] != "Closed"){
+	    		continue;
+	    	}
 			New_task.progress = sum(values[i]);
 		} else if (arg == "-avancement") {	
-			New_task.avancement = stoi(sum(values[i]));
+			string av = sum(values[i]);
+			if (is_int(av)) {
+				New_task.avancement = stoi(av);
+			} else {
+				is_task_good = false;
+				break;
+			}
 		} else if (arg == "-priority") {
-			New_task.priority = sum(values[i]);
+	    	if (values[i][0] != "Low" & values[i][0] != "Normal" & values[i][0] != "High" & values[i][0] != "Super-High"){
+	    		continue;
+	    	}
+	    	New_task.priority = sum(values[i]);
 		} else if (arg == "-comments") {
 			New_task.comments = values[i];
 		} else if (arg == "-under") {
 			vector<string>::iterator it;
 			for (it = values[i].begin(); it < values[i].end(); it++){
-				New_task.Under.push_back(stoi(*it));	
+				if (is_int(*it)){
+					New_task.Under.push_back(stoi(*it));	
+				} else {
+					is_task_good = false;
+					break;
+				}
 			}
 		}
 	}
-	New_task.add_to_file(); // add to the file
+	if (is_task_good){	
+		New_task.add_to_file(); // add to the file
+	}
 }
 
 bool is_not_in(string test, vector<int> list){
@@ -219,7 +244,6 @@ void modify(vector<Task_manager> Tasks, vector<string> args, vector<vector<strin
 	vector<string>::iterator it;
 
 	// Catch the differents fields and values associated
-
 	int incr = 0;
 	for (it = args.begin(); it < args.end(); it++) {
 		if ((*it)[it->size() -1] == 'm') {
@@ -241,14 +265,17 @@ void modify(vector<Task_manager> Tasks, vector<string> args, vector<vector<strin
 
 	// Then add the updated Task with the updated values in its fields
 
+	bool is_task_good;
+
 	vector<Task_manager>::iterator iter;
 	vector<string>::iterator iter_args;
-	int i = 0;
 	for (iter = list_task.begin(); iter < list_task.end(); iter++) {
 		Task_manager Task = *iter;
 
-		// Replace the values in the fields given by the user (by adding a 'm' : --titlem THE TITLE will put THE TITLE as new title in the Task)
+		is_task_good = true;
 
+		// Replace the values in the fields given by the user (by adding a 'm' : --titlem THE TITLE will put THE TITLE as new title in the Task)
+		int i = 0;
 		for (iter_args = new_args.begin(); iter_args < new_args.end(); iter_args++) {
 			if (*iter_args == "-title") {
 				Task.title = sum(new_values[i]);
@@ -259,23 +286,45 @@ void modify(vector<Task_manager> Tasks, vector<string> args, vector<vector<strin
 			} else if (*iter_args == "-end") {
 				Task.end = sum(new_values[i]);
 			} else if (*iter_args == "-progress") {
-				Task.progress = sum(new_values[i]);
+				if (new_values[i][0] == "Open" | new_values[i][0] == "In-Progress" | new_values[i][0] == "Closed"){
+					Task.progress = sum(new_values[i]);
+				} else {
+					is_task_good = false;
+				}
 			} else if (*iter_args == "-avancement") {
-				Task.avancement = stoi(sum(new_values[i]));
+
+				// Check if we have an int
+
+				string av = sum(new_values[i]);
+				if (is_int(av)){
+					Task.avancement = stoi(av);
+				}
 			} else if (*iter_args == "-priority") {
-				Task.priority = sum(new_values[i]);
+				if (new_values[i][0] == "Low" | new_values[i][0] == "Normal" | new_values[i][0] == "High" | new_values[i][0] == "Super-High"){
+					Task.priority = sum(new_values[i]);
+				}
 			} else if (*iter_args == "-comments") {
 				Task.comments = new_values[i];
 			} else if (*iter_args == "-under") {
 				vector<string>::iterator it;
 				for (it = new_values[i].begin(); it < new_values[i].end(); it++){
-					Task.Under.push_back(stoi(*it));	
+
+					// Check if we have an int
+
+					string num = stoi(*it);
+					if (is_int(num)) {
+						Task.Under.push_back();	
+					} else {
+						is_task_good = false;
+					}
 				}
 			}
+			i++;
 		}
 
 		// Finaly add the updated Task to the file
-
-		Task.add_to_file();
+		if (is_task_good){
+			Task.add_to_file();
+		}
 	}
 }
