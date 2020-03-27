@@ -70,3 +70,5 @@ Exemple complet : "modify --begin 15/2/2020 --beginm 15/4/2020 --descriptionm t�
 # Mode Graphique
 
 Le mode graphique utilise les fonctions définies dans le mode console et apporte une interface graphique supplémentaire. On y retrouve donc les mêmes fonctionnalités. Voici un graphe des différentes parties de l'interface que vous verrez :
+
+![schema](schema.png)
