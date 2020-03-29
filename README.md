@@ -26,6 +26,16 @@ Afin de vous faire comprendre de l'API vous devez suivre un protocole. Le premie
 - comments : repère les commentaires. Pour séparer deux commentaires il faut mettre le caractère '^'.
 - under : donne les IDs des sous tâches de cette tâche.
 
+Par défault, une tâche prend les valeurs suivantes: 
+Titre : Pas de titre
+Description : Pas de description
+date de début et de fin : date actuelle
+progrès : Ouvert
+avancement : 0%
+priorité : Normal
+commentaires : vide
+sous-tâches : vide
+
 ## Utilisation des fonctionnalités
 
 4 fonctionnalités sont disponibles : créer, modifier, faire une liste, supprimer.
@@ -72,3 +82,32 @@ Exemple complet : "modify --begin 15/2/2020 --beginm 15/4/2020 --descriptionm t�
 Le mode graphique utilise les fonctions définies dans le mode console et apporte une interface graphique supplémentaire. On y retrouve donc les mêmes fonctionnalités. Voici un graphe des différentes parties de l'interface que vous verrez :
 
 ![schema](schema.png)
+
+On retrouve donc les mêmes fonctionnalités que le mode console. 
+
+### Créer
+
+Pour créer une nouvelle tâche depuis le menu principal, cliquer sur l'icône "Create Task", puis entrer les paramètres que vous désirez. L'interface vous forcera à mettre un nombre dans la partie "avancement", et pour différentier deux commentaires vous pouvez faire un saut de ligne
+
+Lorsque vous avez fini, cliquez sur "done" et fermer la fenêtre, vous tâche est enregistrée !
+
+![create](create_graphic.png)
+
+### Faire une liste
+
+Pour faire une liste de tâche vérifiant des propriétés communes, cliquez sur l'icône "List Tasks" dans le menu principal. Vous serez alors invité à entrer les paramètres qui vous intéressent, et lorsque vous aurez fini vous cliquerez sur "done".
+
+Ensuite une autre fenêtre s'ouvrira et vous pourrez visualiser les tâches vérifiant vos conditions. Pour visualiser une tâche, il suffit de cliquer sur son nom dans la liste déroulante que vous verrez.
+
+### Supprimer
+
+Dans ce mode, vous pouvez supprimer une tâche directement en récupérant son identifiant, ou bien supprimer plusieurs tâches en même temps. Pour cela, cliquer dans le menu principal sur le bouton "Delete Existing Task", puis sur "Delete by ID" ou "Delete by other elements".
+
+- Delete by ID : une petit fenêtre s'ouvre, vous pouvez entrer l'identifiant de la tâche et cliquer sur "done". La tâche est alors effectivement supprimée. 
+- Delete by other elements : De même, une fenêtre s'ouvre et vous êtes invités à remplir les champs qui vous intéressent. Il suffit ensuite de cliquer sur le bouton "done"
+
+### Modifier
+
+Pour modifier une tâche, il faut tout d'abord cliquer sur le bouton "Modify Existing Task". Une fenêtre avec une liste déroulante s'ouvre alors : c'est la liste de toutes les tâches enregistrées. Il vous suffit alors de choisir la tâche ayant le titre qui vous intéresse, et de cliquer dessus. Ses informations s'ouvrent et vous pouvez cliquer sur le bouton "modiify".
+
+Une dernière fenêtre s'ouvre alors, vous proposant de modifier les champs de votre choix. Lorsque vous avez fini, cliquez sur "done", et l'interface vous ramène au menu principal.
