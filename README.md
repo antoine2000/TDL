@@ -101,6 +101,10 @@ Ensuite une autre fenêtre s'ouvrira et vous pourrez visualiser les tâches vér
 
 ![list](list_graphic.png)
 
+Arrivé à ce niveau, il suffit de cliquer sur "search", et les informations de votre tâche apparaissent:
+
+![info](info_graphic.png)
+
 ### Supprimer
 
 Dans ce mode, vous pouvez supprimer une tâche directement en récupérant son identifiant, ou bien supprimer plusieurs tâches en même temps. Pour cela, cliquer dans le menu principal sur le bouton "Delete Existing Task", puis sur "Delete by ID" ou "Delete by other elements".
@@ -108,8 +112,22 @@ Dans ce mode, vous pouvez supprimer une tâche directement en récupérant son i
 - Delete by ID : une petit fenêtre s'ouvre, vous pouvez entrer l'identifiant de la tâche et cliquer sur "done". La tâche est alors effectivement supprimée. 
 - Delete by other elements : De même, une fenêtre s'ouvre et vous êtes invités à remplir les champs qui vous intéressent. Il suffit ensuite de cliquer sur le bouton "done"
 
+fenêtre de suppression par identifiant :
+
+![delete_ID](delete_ID_graphic.png)
+
+fenêtre de suppression avec d'autres éléments:
+
+![delete_el](delete_el_graphic.png)
+
+
+
 ### Modifier
 
 Pour modifier une tâche, il faut tout d'abord cliquer sur le bouton "Modify Existing Task". Une fenêtre avec une liste déroulante s'ouvre alors : c'est la liste de toutes les tâches enregistrées. Il vous suffit alors de choisir la tâche ayant le titre qui vous intéresse, et de cliquer dessus. Ses informations s'ouvrent et vous pouvez cliquer sur le bouton "modiify".
 
 Une dernière fenêtre s'ouvre alors, vous proposant de modifier les champs de votre choix. Lorsque vous avez fini, cliquez sur "done", et l'interface vous ramène au menu principal.
+
+fenêtre de modification:
+
+![modify](modify_graphic.png)
