@@ -27,14 +27,14 @@ Afin de vous faire comprendre de l'API vous devez suivre un protocole. Le premie
 - under : donne les IDs des sous tâches de cette tâche.
 
 Par défault, une tâche prend les valeurs suivantes: 
-Titre : Pas de titre
-Description : Pas de description
-date de début et de fin : date actuelle
-progrès : Ouvert
-avancement : 0%
-priorité : Normal
-commentaires : vide
-sous-tâches : vide
+- Titre : Pas de titre
+- Description : Pas de description
+- date de début et de fin : date actuelle
+- progrès : Ouvert
+- avancement : 0%
+- priorité : Normal
+- commentaires : vide
+- sous-tâches : vide
 
 ## Utilisation des fonctionnalités
 
@@ -97,7 +97,9 @@ Lorsque vous avez fini, cliquez sur "done" et fermer la fenêtre, vous tâche es
 
 Pour faire une liste de tâche vérifiant des propriétés communes, cliquez sur l'icône "List Tasks" dans le menu principal. Vous serez alors invité à entrer les paramètres qui vous intéressent, et lorsque vous aurez fini vous cliquerez sur "done".
 
-Ensuite une autre fenêtre s'ouvrira et vous pourrez visualiser les tâches vérifiant vos conditions. Pour visualiser une tâche, il suffit de cliquer sur son nom dans la liste déroulante que vous verrez.
+Ensuite une autre fenêtre s'ouvrira et vous pourrez visualiser les tâches vérifiant vos conditions. Pour visualiser une tâche, il suffit de cliquer sur son nom dans la liste déroulante que vous verrez, puis de cliquer sur le bouton "search", vous verrez alors les informations sur votre tâche.
+
+![list](list_graphic.png)
 
 ### Supprimer
 
