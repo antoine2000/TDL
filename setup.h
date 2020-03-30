@@ -109,10 +109,9 @@ understood to_understood(vector<string> instructs) {
 					arg_name = token;
 					token = "";
 					arg_token = true;
-				} else if (*ig == '^' and arg_name == "-comments"){
+				} else if (*ig == ';' and (arg_name == "-comments" or arg_name == "-Under")){
 					current_values.push_back(token);
 					token = "";
-					ig++;
 				} else {
 					token += *ig;
 				}

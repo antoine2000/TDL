@@ -116,32 +116,32 @@ void modify_task(Fl_Widget *window, void* transmission){
   // title
   static char old_title[1000];
   strcpy(old_title, (" old title : " + input -> Task -> title).c_str());
-  Fl_Box *title = new Fl_Box(x, y, w, h, old_title);
+  Fl_Box *title = new Fl_Box(x - 10, y, w, h, old_title);
   // description
   y += 35;
   static char old_description[1000];
   strcpy(old_description, ("old description : " + input -> Task -> description).c_str());
-  Fl_Box *description = new Fl_Box(x + 68, y, w, h, old_description);
+  Fl_Box *description = new Fl_Box(x + 77, y, w, h, old_description);
   //begin 
   y += 35;
   static char old_begin[1000];
   strcpy(old_begin, ("old begin : " + input -> Task -> begin).c_str());
-  Fl_Box *begin = new Fl_Box(x - 12, y, w, h, old_begin);
+  Fl_Box *begin = new Fl_Box(x + 13, y, w, h, old_begin);
   // end 
   y += 35;
   static char old_end[1000];
   strcpy(old_end, ("old end : " + input -> Task -> end).c_str());
-  Fl_Box *end = new Fl_Box(x - 18, y, w, h, old_end);
+  Fl_Box *end = new Fl_Box(x + 10, y, w, h, old_end);
   // Progress
   y += 35;
   static char old_progress[1000];
   strcpy(old_progress, ("old progress : " + input -> Task -> progress).c_str());
-  Fl_Box *progress = new Fl_Box(x + 15, y, w, h, old_progress);
+  Fl_Box *progress = new Fl_Box(x + 23, y, w, h, old_progress);
   // Avancement
   y += 35;
   static char old_avancement[1000];
   strcpy(old_avancement, ("old avancement : " + to_string(input -> Task -> avancement)).c_str());
-  Fl_Box *avancement = new Fl_Box(x + 10, y, w, h, old_avancement);
+  Fl_Box *avancement = new Fl_Box(x + 5, y, w, h, old_avancement);
   // Priority
   y += 35;
   static char old_priority[1000];
@@ -160,7 +160,7 @@ void modify_task(Fl_Widget *window, void* transmission){
     }
   }
   strcpy(old_comments, ("old comments : " + text).c_str());
-  Fl_Box *comments = new Fl_Box(x + 75, y, w, h, old_comments);
+  Fl_Box *comments = new Fl_Box(x + 65, y, w, h, old_comments);
   // Under
   y += h + 15;
   static char old_Under[10000];
@@ -172,11 +172,11 @@ void modify_task(Fl_Widget *window, void* transmission){
      text2 += " ";
   }
   strcpy(old_Under, ("old sub-tasks : " + text2).c_str());
-  Fl_Box *Under = new Fl_Box(x - 5, y, w, h, old_Under);
+  Fl_Box *Under = new Fl_Box(x - 15, y, w, h, old_Under);
   // New values
-  x = 450, y = 40, w = 100, h = 30;
+  x = 600, y = 40, w = 100, h = 30;
   // title
-  new_values.title = new Fl_Input(x, y, w, h, "new title");
+  new_values.title = new Fl_Input(x - 55, y, w, h, "new title");
   new_values.title -> tooltip("new title");
   // description
   y += 35;
@@ -184,11 +184,11 @@ void modify_task(Fl_Widget *window, void* transmission){
   new_values.description -> tooltip("new description");
   // begin
   y += 35;
-  new_values.begin = new Fl_Input(x, y, w, h, "new begin");
+  new_values.begin = new Fl_Input(x - 30, y, w, h, "new begin");
   new_values.begin -> tooltip("new begin");
   // end
   y += 35;
-  new_values.end = new Fl_Input(x, y, w, h, "new end");
+  new_values.end = new Fl_Input(x - 27, y, w, h, "new end");
   new_values.end -> tooltip("new end");
   // progress
   y += 35;
@@ -211,7 +211,7 @@ void modify_task(Fl_Widget *window, void* transmission){
   new_values.priority -> add("Super-High");
 
   y += 35;
-  new_values.comments = new Fl_Multiline_Input(x + 35, y, w - 35, h + 50,"comments");
+  new_values.comments = new Fl_Multiline_Input(x + 35, y, w, h + 50,"comments");
   new_values.comments -> tooltip("comments");
 
   y += 85;

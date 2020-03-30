@@ -98,7 +98,7 @@ vector<Task_manager> list(vector<Task_manager> Tasks, vector<string> args, vecto
 		    			boolean = false;
 		    		}
 	    		}
-	    	} else if (arg == "-under" || arg == "under") {
+	    	} else if (arg == "-Under" || arg == "Under") {
 	    		vector<int> unders = Task.Under;
    				vector<string>::iterator it1;
     			for (it1 = values[j].begin(); it1 < values[j].end(); it1++ ){	    		
@@ -175,11 +175,15 @@ void create(vector<Task_manager> Tasks, vector<string> args, vector<vector<strin
 	    	New_task.priority = sum(values[i]);
 		} else if (arg == "-comments") {
 			New_task.comments = values[i];
-		} else if (arg == "-under") {
+		} else if (arg == "-Under") {
 			vector<string>::iterator it;
 			for (it = values[i].begin(); it < values[i].end(); it++){
 				if (is_int(*it)){
-					New_task.Under.push_back(stoi(*it));	
+					if (New_task.Under[0] == -1) { // Under était vide
+						New_task.Under[0] = stoi(*it);
+					} else {
+						New_task.Under.push_back(stoi(*it));	
+					}
 				} else {
 					is_task_good = false;
 					break;
@@ -187,7 +191,7 @@ void create(vector<Task_manager> Tasks, vector<string> args, vector<vector<strin
 			}
 		}
 	}
-	if (is_task_good){	
+	if (is_task_good){
 		New_task.add_to_file(); // add to the file
 	}
 }
@@ -311,9 +315,9 @@ void modify(vector<Task_manager> Tasks, vector<string> args, vector<vector<strin
 
 					// Check if we have an int
 
-					string num = stoi(*it);
+					string num = *it;
 					if (is_int(num)) {
-						Task.Under.push_back();	
+						Task.Under.push_back(stoi(num));	
 					} else {
 						is_task_good = false;
 					}
