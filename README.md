@@ -36,6 +36,11 @@ Par défault, une tâche prend les valeurs suivantes:
 - commentaires : vide
 - sous-tâches : vide
 
+## Avertissement 
+
+Certaines possibilités sont interdites par l'interface. En effet vous ne pourrez pas entrer de "/" dans vos commandes, car ce caractère est utilisé comme séparateur dans le fichier de stockage des tâches.
+De plus, si vous entrez autre chose qu'un nombre pour l'argument "avancement" ou autre chose qu'une série de nombres pour l'argument "under", votre commande sera rejetée. Cela peut être grave si vous modifiez une tâche car cette dernière sera détruite.
+
 ## Utilisation des fonctionnalités
 
 4 fonctionnalités sont disponibles : créer, modifier, faire une liste, supprimer.
