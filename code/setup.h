@@ -101,10 +101,10 @@ understood to_understood(vector<string> instructs) {
 			string arg_name = "";
 			bool arg_token = false;		// check if the name of the argument has already been taken
 			for (ig = current.begin(); ig < current.end(); ig++) {
-				if (*ig == ' '  and token != "" and arg_token and arg_name != "-comments") {
+				if (*ig == ' '  and token != "" and arg_token and arg_name != "-comments" and arg_name != "-Under") {
 					current_values.push_back(token);
 					token = "";
-				} else if (*ig == ' ' and arg_name != "-comments" and token != "") {
+				} else if (*ig == ' ' and arg_name != "-comments" and token != "" and arg_name != "-Under") {
 					_args.push_back(token);
 					arg_name = token;
 					token = "";
