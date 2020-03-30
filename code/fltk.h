@@ -521,10 +521,7 @@ void create_graphic(Fl_Widget *wh){
   Fl_Window *window = new Fl_Window(800,800,"create a Task");
   Info input;
   int x = 80, y = 50, w = 660, h = 30;
-  input.ID = new Fl_Int_Input(x - 10, y, w + 10, h, "ID");
-  input.ID -> tooltip("ID");
 
-  y += 35;
   input.title = new Fl_Input(x, y, w, h,"title");
   input.title -> tooltip("title");
 
