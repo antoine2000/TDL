@@ -76,26 +76,28 @@ public:
 				vector<int> _Under);
 
     void print() {
-    	cout << "ID : " << ID << endl;
-    	cout << "title : " << title << endl;
-    	cout << "description : " << description << endl;
-    	cout << "begin : " << begin << endl;
-    	cout << "end : " << end << endl;
-    	cout << "progress: " << progress << endl;
-    	cout << "avancement : " << avancement <<  "%" << endl;
-    	cout << "priority : " << priority << endl;
-    	cout << "comments : ";
+    	cout << endl;
+    	cout << "ID : " << ID;
+    	cout << "                                   title : " << title << endl;
+    	cout << "				      description : " << description << endl;
+    	cout << "			        begin : " << begin ;
+    	cout << "   ->   end : " << end << endl;
+    	cout << "			  progress: " << progress;
+    	cout << " ||  avancement : " << avancement <<  "%";
+    	cout << " ||  priority : " << priority << endl;
+    	cout << "			comments : ";
     	vector<string>::iterator it1;
     	for(it1 = comments.begin(); it1 != comments.end(); it1++){
-    		cout << *it1 << " ,";
+    		cout << *it1 << " ;";
     	}
     	cout << endl;
-    	cout << "Under : ";
+    	cout << "			Under : ";
     	vector<int>::iterator it2;
     	for(it2 = Under.begin(); it2 != Under.end(); it2++){
-    		cout << *it2 << " ," << endl;
+    		cout << *it2 << " ,";
     	}
     	cout << endl;
+    	cout << "   =====================================================================================================================" << endl;
     }
     bool is_wrong();
 

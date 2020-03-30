@@ -85,8 +85,12 @@ understood get_values(Info* input){
         // under
   if (input -> sub_tasks -> size() != 0){
     strcpy(s, input -> sub_tasks -> value());
-    args.push_back("under");
-    values.push_back(parse(s,"\n"));
+    args.push_back("-Under");
+    values.push_back(parse(s,";"));
+    vector<string>::iterator it;
+    for (it = values[-1].begin(); it < values[-1].end(); it++){
+      cout << *it << endl;
+    }
   }
   understood param;
   param.args = args;
@@ -266,6 +270,8 @@ void affiche_task(Task_manager Task){
 
 void get_item(Fl_Widget *w, void *menu){
 
+  /* This function displays a Task */
+
   list_done *input = reinterpret_cast<list_done*>(menu);
   const char* name = input-> choice -> mvalue() -> label();
   vector<Task_manager>::iterator it;
@@ -273,7 +279,7 @@ void get_item(Fl_Widget *w, void *menu){
   vector<Task_manager> Tasks = *(input -> found);
   transmission.Tasks = Tasks;
   for (it = Tasks.begin(); it != Tasks.end(); it++) {
-    if ((*it).title == (string)name) {
+    if (("ID = " + to_string((*it).ID) + "  title = : " + ((*it).title)) == name) {
       w -> parent() -> size(800,500);
       Fl_Window *win = new Fl_Window(800,500,name);
       w -> parent() -> add(win);
@@ -335,7 +341,7 @@ int affiche_list(vector<Task_manager> found) {
   vector<Task_manager>::iterator it;
   char s[1000];
   for (it = found.begin(); it < found.end(); it++){
-    strcpy(s, ((*it).title).c_str());
+    strcpy(s, ("ID = " + to_string((*it).ID) + "  title = : " + ((*it).title)).c_str());
     choice -> add(s);
   }
   list_done menu;

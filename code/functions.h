@@ -251,7 +251,7 @@ void modify(vector<Task_manager> Tasks, vector<string> args, vector<vector<strin
 	int incr = 0;
 	for (it = args.begin(); it < args.end(); it++) {
 		if ((*it)[it->size() -1] == 'm') {
-			former_args.push_back((*it).substr(0, it->size() - 2));
+			former_args.push_back((*it).substr(0, it->size() - 1));
 			former_values.push_back(values[incr++]);
 		} else {
 			new_args.push_back(*it);
@@ -262,7 +262,6 @@ void modify(vector<Task_manager> Tasks, vector<string> args, vector<vector<strin
 	// Find the Tasks that are compatible with the former args
 
 	vector<Task_manager> list_task = list(Tasks, former_args, former_values);
-
 	// Remove that Tasks
 
 	remove_tasks(list_task);
