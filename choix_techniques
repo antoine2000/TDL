@@ -1,0 +1,42 @@
+# Explication des choix techniques liés au projet
+
+Ce fichier a pour but de vous faire comprendre les choix techniques liés à l'interface de to do list.
+
+## Mode de stockage des informations
+
+Le stockage des informations liées aux tâches se fait dans un fichier unique, nommé "Tasks.txt".
+
+Chaque ligne de ce fichier représente une tâche, et ses attributs sont différenciés par des "/". Le projet attribut est l'identififiant,
+puis le titre, la description, la date de début puis de fin, le statut de la tâche (0 : ouverte, 2 : fermée, 1 : en progrès), son avancement (en %),
+son importance (0 : faible, 1 : normale, 2 : haute, 3 : super haute), et enfin ses commmentaires puis ses sous-tâches.
+
+## Traitement des commandes
+
+Les commandes de l'utilisateur sont tout d'abord séparées en fonctions principales puis en différentes arguments, au moyen d'une fonction
+qui "coupe" l'entrée lorsqu'elle détecte un "--".
+
+Ensuite chaque arguments est interprété, ainsi que les valeurs entrées par l'utilisateur. On a donc 3 objets à la fin de l'interprétation par l'interface :
+ - La fonction principale
+ - Les arguments entrés
+ - Les valeurs associées
+
+Ce triplet constitue dans le code un objet intitulé "understood". L'objet understood est alors utilisé par l'interface pour réagir.
+
+### Création d'une tâche
+
+Lorsque l'utilisateur veut créer une tâche, il entre ses arguments et valeurs. On utilise alors une fonction attachée à la classe "Task-manager",
+la fonction "add_to_file", qui vérifie que les arguments sont bien valides (pas de /), puis ajoute une ligne au fichier "Tasks.txt".
+
+### Liste de tâches
+
+Pour faire des listes de tâches, on cherche les tâches qui vérifient les valeurs entrées par l'utilisateur. 
+
+Dans le cas général, on cherche à faire correspondre exactement les valeurs de l'utilisateur et les valeurs des tâches. Cependant, 
+deux cas particuliers sont à retenir : les commentaires et les sous-tâches. 
+Pour ces deux arguments, l'interface cherchera les tâches vérifiant au moins l'une des valeurs entrées. 
+
+Par exemple, si l'utilisateur entre "list --comments co1;co2", l'interface renverra toutes les tâches ayant au moins co1 ou co2 comme commentaires.
+
+
+
+
