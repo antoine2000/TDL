@@ -38,12 +38,22 @@ understood get_values(Info* input){
   vector<string> args;
   vector<vector<string>> values;
   static char s[1000];
+        // ID
+  if (input -> ID != nullptr){
+    if (input -> ID -> size() != 0){
+      strcpy(s, (input -> ID -> value()));
+      args.push_back("-ID");
+      values.push_back(vector<string> {s});
+    }    
+  }
+
         // title
   if (input -> title -> size() != 0){
     strcpy(s, input -> title -> value());
     args.push_back("-title");
     values.push_back(vector<string> {s});
   }
+
         // description
   if (input -> description -> size() != 0){
     strcpy(s, input -> description -> value());
@@ -64,18 +74,23 @@ understood get_values(Info* input){
   }
             // progress
   strcpy(s, input -> progress -> value());
-  args.push_back("-progress");
-  values.push_back(vector<string> {s});
+  if ((string) s ==  (string) "Open" | (string) s == (string) "In-Progress" | (string) s == (string) "Closed"){
+    args.push_back("-progress");
+    values.push_back(vector<string> {s});
+  }
 
         // avancement
   if (input -> avancement -> size() != 0){
     args.push_back("-avancement");
     values.push_back(vector<string> {to_string(atoi(input->avancement->value()))});
   }
+
         // priority
   strcpy(s, input -> priority -> value());
-  args.push_back("-priority");
-  values.push_back(vector<string> {s});
+  if ((string) s == (string) "Low" | s == (string) "Normal" | (string) s == (string) "High" | (string) s == (string) "Super-High"){
+    args.push_back("-priority");
+    values.push_back(vector<string> {s});    
+  }
         // comments
   if (input -> comments -> size() != 0){
     strcpy(s, input -> comments -> value());
@@ -88,9 +103,6 @@ understood get_values(Info* input){
     args.push_back("-Under");
     values.push_back(parse(s,";"));
     vector<string>::iterator it;
-    for (it = values[-1].begin(); it < values[-1].end(); it++){
-      cout << *it << endl;
-    }
   }
   understood param;
   param.args = args;
@@ -102,6 +114,8 @@ void execute_modif(Fl_Widget* win, void* new_values){
   Info* input = reinterpret_cast<Info*>(new_values);
   // values to give as argument to the "modify" function
   understood param = get_values(input);
+  param.args.push_back("-IDm");
+  param.values.push_back(vector<string> {to_string(input -> Task -> ID)});
   vector<Task_manager> Tasks = setup();
   modify(Tasks, param.args, param.values);
   if (win -> parent() -> parent() -> parent() != nullptr){
@@ -115,6 +129,7 @@ void modify_task(Fl_Widget *window, void* transmission){
   window -> parent() -> add(win);
   Info new_values;
   new_values.Tasks = input -> Tasks;
+  new_values.Task = input -> Task;
   // old values
   int x = 50, y = 40, w = 100, h = 30;
   // title
@@ -355,7 +370,6 @@ int affiche_list(vector<Task_manager> found) {
 
 void done_list(Fl_Widget *wh, void* parameter) {
   Info* input = reinterpret_cast<Info*>(parameter);
-
   understood param = get_values(input);
   vector<Task_manager> found = list(setup(), param.args, param.values);
   int i = affiche_list(found);

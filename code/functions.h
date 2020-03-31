@@ -51,10 +51,10 @@ vector<Task_manager> list(vector<Task_manager> Tasks, vector<string> args, vecto
 
 	vector<Task_manager> List_task;
 	bool boolean;
-	for(int i = 0; i < Tasks.capacity(); i++) { // for each Task
+	for(int i = 0; i < Tasks.size(); i++) { // for each Task
 		boolean = true; 						// The boolean that will check whereas the fields of the tested Task have the same value as the values passed as arguments
 		Task_manager Task = Tasks[i];
-		for(int j = 0; j < args.capacity(); j++) {
+		for(int j = 0; j < args.size(); j++) {
 			string field;
 			string arg = args[j];
 			if (arg == "-ID" || arg == "ID") {
