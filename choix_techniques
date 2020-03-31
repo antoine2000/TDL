@@ -37,6 +37,21 @@ Pour ces deux arguments, l'interface cherchera les tâches vérifiant au moins l
 
 Par exemple, si l'utilisateur entre "list --comments co1;co2", l'interface renverra toutes les tâches ayant au moins co1 ou co2 comme commentaires.
 
+### Supprimer
+
+Pour supprimer, j'ai décidé de réecrire le fichier d'enregistrement en faisant la liste des tâches concernées par la commande de l'utilisateur
+Ces tâches ne sont donc pas inscrites dans le "nouveau" fichier
+
+### Modifier
+
+Pour modifier, j'ai décidé de supprimer les tâches concernées par la commande de l'utilisateur et de les réecrire
+
+## Mode graphique
+
+Le code du mode graphique est très particulier, j'ai eu du mal à gérer les différents types de FLTK et j'ai donc beaucoup de code redondant
+ou qui aurait pu être évité. Cepedendant le fonctionnement général du code est de faire le lien entre l'interface graphique et les fonctions 
+codées en C++ du mode console, au moyen des différents "widgets" de FLTK. La partie la plus complexe vient lors de l'interprétation des entrées
+utilisateurs...
 
 
 
