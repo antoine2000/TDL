@@ -1,1 +1,0 @@
-g++ fltk_test.cpp `./fltk-1.3.5-source/fltk-1.3.5/fltk-config --cxxflags --ldflags`
