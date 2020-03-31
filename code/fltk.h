@@ -46,64 +46,85 @@ understood get_values(Info* input){
       values.push_back(vector<string> {s});
     }    
   }
-
         // title
-  if (input -> title -> size() != 0){
-    strcpy(s, input -> title -> value());
-    args.push_back("-title");
-    values.push_back(vector<string> {s});
+  if (input -> title != nullptr){  
+    if (input -> title -> size() != 0){
+        strcpy(s, input -> title -> value());
+        args.push_back("-title");
+        values.push_back(vector<string> {s});
+      }
   }
 
         // description
-  if (input -> description -> size() != 0){
-    strcpy(s, input -> description -> value());
-    args.push_back("-description");
-    values.push_back(vector<string> {s});
+  if(input -> description != nullptr) {  
+    if (input -> description -> size() != 0){
+        strcpy(s, input -> description -> value());
+        args.push_back("-description");
+        values.push_back(vector<string> {s});
+      }
   }
         // begin
-  if (input -> begin -> size() != 0){
-    strcpy(s, input -> begin -> value());
-    args.push_back("-begin");
-    values.push_back(vector<string> {s});
+  if (input -> begin != nullptr){  
+    if (input -> begin -> size() != 0){
+        strcpy(s, input -> begin -> value());
+        args.push_back("-begin");
+        values.push_back(vector<string> {s});
+      }
   }
         // end
-  if (input -> end -> size() != 0){
-    strcpy(s, input -> end -> value());
-    args.push_back("-end");
-    values.push_back(vector<string> {s});
+  if (input -> end != nullptr) {  
+    if (input -> end -> size() != 0){
+        strcpy(s, input -> end -> value());
+        args.push_back("-end");
+        values.push_back(vector<string> {s});
+      }
   }
+
             // progress
-  strcpy(s, input -> progress -> value());
-  if ((string) s ==  (string) "Open" | (string) s == (string) "In-Progress" | (string) s == (string) "Closed"){
-    args.push_back("-progress");
-    values.push_back(vector<string> {s});
+  if (input -> progress != nullptr) {
+    strcpy(s, input -> progress -> value());
+    if ((string) s ==  (string) "Open" | (string) s == (string) "In-Progress" | (string) s == (string) "Closed"){
+      args.push_back("-progress");
+      values.push_back(vector<string> {s});
+    }
   }
 
         // avancement
-  if (input -> avancement -> size() != 0){
-    args.push_back("-avancement");
-    values.push_back(vector<string> {to_string(atoi(input->avancement->value()))});
+  if (input -> avancement != nullptr) {  
+    if (input -> avancement -> size() != 0){
+        args.push_back("-avancement");
+        values.push_back(vector<string> {to_string(atoi(input->avancement->value()))});
+      }
   }
 
         // priority
-  strcpy(s, input -> priority -> value());
-  if ((string) s == (string) "Low" | s == (string) "Normal" | (string) s == (string) "High" | (string) s == (string) "Super-High"){
-    args.push_back("-priority");
-    values.push_back(vector<string> {s});    
+  if (input -> priority != nullptr) { 
+    strcpy(s, input -> priority -> value());
+    if ((string) s == (string) "Low" | s == (string) "Normal" | (string) s == (string) "High" | (string) s == (string) "Super-High"){
+      args.push_back("-priority");
+      values.push_back(vector<string> {s});    
+    }    
   }
+
         // comments
-  if (input -> comments -> size() != 0){
-    strcpy(s, input -> comments -> value());
-    args.push_back("-comments");
-    values.push_back(parse(s,"\n"));
-  }  
-        // under
-  if (input -> sub_tasks -> size() != 0){
-    strcpy(s, input -> sub_tasks -> value());
-    args.push_back("-Under");
-    values.push_back(parse(s,";"));
-    vector<string>::iterator it;
+  if (input -> comments != nullptr) {  
+    if (input -> comments -> size() != 0){
+        strcpy(s, input -> comments -> value());
+        args.push_back("-comments");
+        values.push_back(parse(s,"\n"));
+      }  
   }
+
+        // under
+  if (input -> sub_tasks != nullptr) {  
+    if (input -> sub_tasks -> size() != 0){
+        strcpy(s, input -> sub_tasks -> value());
+        args.push_back("-Under");
+        values.push_back(parse(s,";"));
+        vector<string>::iterator it;
+      }
+  }
+
   understood param;
   param.args = args;
   param.values = values;
@@ -441,7 +462,6 @@ void modify_graphic(Fl_Widget *w){
 
 void process_delete(Fl_Widget *w, void* parameter){
   Info* Input = reinterpret_cast<Info*>(parameter);
-
   understood param = get_values(Input);
   vector<Task_manager> Tasks = setup();
   vector<Task_manager> list_task = list(Tasks, param.args, param.values);
@@ -453,6 +473,12 @@ void delete_task_by_elements(Fl_Widget *wh){
   Fl_Box *head = new Fl_Box(10,10,780,100,"Veuillez lister les caractéristiques des tâches à supprimer");
   head -> labelsize(20);
   Info input;
+
+  // to avoid nullptr and segfault
+
+  input.ID = new Fl_Int_Input(0,0,1,1);
+  input.ID -> hide();
+
   int x = 80, y = 110, w = 660, h = 30;
   input.title = new Fl_Input(x, y, w, h,"title");
   input.title -> tooltip("title");
@@ -511,6 +537,28 @@ void delete_task_by_id(Fl_Widget *w){
   Fl_Button *done = new Fl_Button(50,50,100,30,"done");
   Info Input;
   Input.ID = new Fl_Int_Input(30,10,160,30,"ID");
+
+  // to avoid nullptr and seg fault
+
+  Input.title = new Fl_Input(0,0,1,1);
+  Input.title -> hide();
+  Input.description = new Fl_Input(0,0,1,1);
+  Input.description -> hide();
+  Input.begin = new Fl_Input(0,0,1,1);
+  Input.begin -> hide();
+  Input.end = new Fl_Input(0,0,1,1);
+  Input.end -> hide();
+  Input.avancement = new Fl_Int_Input(0,0,1,1);
+  Input.avancement -> hide();
+  Input.priority = new Fl_Input_Choice(0,0,1,1);
+  Input.priority -> hide();
+  Input.progress = new Fl_Input_Choice(0,0,1,1);
+  Input.progress -> hide();
+  Input.comments = new Fl_Multiline_Input(0,0,1,1);
+  Input.comments -> hide();
+  Input.sub_tasks = new Fl_Input(0,0,1,1);
+  Input.sub_tasks -> hide();
+
   done -> callback(process_delete,&Input);
   win -> end();
   win -> show();
