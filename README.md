@@ -78,15 +78,15 @@ Vous pouvez modifier des tâches pré-existantes. Pour cela, la démarche est l�
 
 Pour que l'interface connaisse les changements à effectuer, il faut cependant donner plus d'arguments : ces arguments seront les mêmes que ceux utilisés précédemment, en ajoutant un "m" à la fin du mot.
 
-Par exemple : on écrira "--titlem TITRE2" si on veut que les tâches sélectionnées voient leur titre modifié en TITRE2.
+Par exemple : on écrira "--title TITRE2" si on veut que les tâches sélectionnées voient leur titre modifié en TITRE2.
 
-Exemple complet : "modify --begin 15/2/2020 --beginm 15/4/2020 --descriptionm tâche reportée" modifiera toutes les tâches commençant le 15 février 2020 en des tâches commençant le 15 Avril 2020 avec une description "tâche reportée".
+Exemple complet : "modify --beginm 15/2/2020 --begin 15/4/2020 --description tâche reportée" modifiera toutes les tâches commençant le 15 février 2020 en des tâches commençant le 15 Avril 2020 avec une description "tâche reportée".
 
 # Mode Graphique
 
 Le mode graphique utilise les fonctions définies dans le mode console et apporte une interface graphique supplémentaire. On y retrouve donc les mêmes fonctionnalités. Voici un graphe des différentes parties de l'interface que vous verrez :
 
-![schema](schema.png)
+![schema](photos/schema.png)
 
 On retrouve donc les mêmes fonctionnalités que le mode console. 
 
@@ -96,7 +96,7 @@ Pour créer une nouvelle tâche depuis le menu principal, cliquer sur l'icône "
 
 Lorsque vous avez fini, cliquez sur "done" et fermer la fenêtre, vous tâche est enregistrée !
 
-![create](create_graphic.png)
+![create](photos/create_graphic.png)
 
 ### Faire une liste
 
@@ -104,11 +104,11 @@ Pour faire une liste de tâche vérifiant des propriétés communes, cliquez sur
 
 Ensuite une autre fenêtre s'ouvrira et vous pourrez visualiser les tâches vérifiant vos conditions. Pour visualiser une tâche, il suffit de cliquer sur son nom dans la liste déroulante que vous verrez, puis de cliquer sur le bouton "search", vous verrez alors les informations sur votre tâche.
 
-![list](list_graphic.png)
+![list](photos/list_graphic.png)
 
 Arrivé à ce niveau, il suffit de cliquer sur "search", et les informations de votre tâche apparaissent:
 
-![info](info_graphic.png)
+![info](photos/info_graphic.png)
 
 ### Supprimer
 
@@ -119,11 +119,11 @@ Dans ce mode, vous pouvez supprimer une tâche directement en récupérant son i
 
 fenêtre de suppression par identifiant :
 
-![delete_ID](delete_ID_graphic.png)
+![delete_ID](photos/delete_ID_graphic.png)
 
 fenêtre de suppression avec d'autres éléments:
 
-![delete_el](delete_el_graphic.png)
+![delete_el](photos/delete_el_graphic.png)
 
 
 
@@ -133,6 +133,8 @@ Pour modifier une tâche, il faut tout d'abord cliquer sur le bouton "Modify Exi
 
 Une dernière fenêtre s'ouvre alors, vous proposant de modifier les champs de votre choix. Lorsque vous avez fini, cliquez sur "done", et l'interface vous ramène au menu principal.
 
+ATTENTION : vous ne pouvez modifier plusieurs tâches en même temps dans le mode graphique...
+
 fenêtre de modification:
 
-![modify](modify_graphic.png)
+![modify](photos/modify_graphic.png)
