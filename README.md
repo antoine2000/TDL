@@ -6,6 +6,8 @@ Deux modes de fonctionnement son prévus : mode console et mode graphique.
 
 # Mode Console 
 
+Pour entrer dans le mode console, entrez dans le répertoire du projet et entrez : ./application
+
 Dans ce mode tout se gère depuis la console. Le principe de fonctionnement est simple : vous entrez les instructions à la suite et l'interface les traites une à une. Les différents arguments et valeurs doivent être entrés.
 
 Vous verrez affiché l'instruction suivante : " instruct >"" et vous entrerez votre fonction et ses arguments à la suite. Vous appuyerez sur la touche ENTREE. L'instruction se lancera et vous pourrez en effectuer une à la suite. 
@@ -83,6 +85,8 @@ Par exemple : on écrira "--title TITRE2" si on veut que les tâches sélectionn
 Exemple complet : "modify --beginm 15/2/2020 --begin 15/4/2020 --description tâche reportée" modifiera toutes les tâches commençant le 15 février 2020 en des tâches commençant le 15 Avril 2020 avec une description "tâche reportée".
 
 # Mode Graphique
+
+Pour entrer dans le mode graphique, allez dans le répertoire du projet et entrez : ./application --graphic
 
 Le mode graphique utilise les fonctions définies dans le mode console et apporte une interface graphique supplémentaire. On y retrouve donc les mêmes fonctionnalités. Voici un graphe des différentes parties de l'interface que vous verrez :
 
